@@ -28,7 +28,7 @@ class SpectronConfig:
         context_var: str = "SPECTRON_CONTEXT",
         endpoint_var: str = "SPECTRON_ENDPOINT",
         api_key_var: str = "SPECTRON_API_KEY",
-    ) -> "SpectronConfig":
+    ) -> SpectronConfig:
         """Build a config from environment variables.
 
         Raises ``ValueError`` if any of the required variables is missing so

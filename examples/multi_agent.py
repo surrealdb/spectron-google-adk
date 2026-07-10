@@ -44,14 +44,20 @@ async def main() -> None:
         model="gemini-2.5-flash",
         name="data_collector",
         description="Collects and stores information.",
-        instruction="You collect important information and store it with the remember tool.",
+        instruction=(
+            "You collect important information and store it "
+            "with the remember tool."
+        ),
         tools=[collector_tools],
     )
     researcher = Agent(
         model="gemini-2.5-flash",
         name="researcher",
         description="Searches and analyzes stored information.",
-        instruction="You answer questions using the recall and reflect tools over the shared knowledge base.",
+        instruction=(
+            "You answer questions using the recall and reflect tools "
+            "over the shared knowledge base."
+        ),
         tools=[researcher_tools],
     )
 

@@ -25,13 +25,17 @@ classifiers = [
 ]
 dependencies = [
     "google-adk>=1.0.0",
-    "surrealdb[spectron]>=1.0.0",
+    # The Spectron client ships in the base surrealdb package from 3.0.0 on.
+    # Until 3.0.0 is on PyPI, install it from the surrealdb.py main branch
+    # (see the README and the CI workflow).
+    "surrealdb>=3.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0",
     "pytest-asyncio>=0.23",
+    "ruff>=0.6",
 ]
 
 [project.urls]
@@ -45,3 +49,10 @@ packages = ["src/spectron_google_adk"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

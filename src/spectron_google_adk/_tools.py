@@ -13,8 +13,8 @@ memory: the model cannot widen its own scope by choosing a different argument.
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any, Callable
+from collections.abc import Callable, Sequence
+from typing import Any
 
 from google.adk.tools import FunctionTool
 from surrealdb import AsyncSpectron, SpectronError

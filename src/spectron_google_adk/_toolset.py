@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import Optional
 
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
@@ -98,7 +97,7 @@ class SpectronToolset(BaseToolset):
         return self._client
 
     async def get_tools(
-        self, readonly_context: Optional[ReadonlyContext] = None
+        self, readonly_context: ReadonlyContext | None = None
     ) -> list[FunctionTool]:
         return list(self._tools)
 
