@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "spectron-google-adk"
+version = "0.1.0"
+description = "SurrealDB Spectron memory as tools for Google Agent Development Kit (ADK) agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "SurrealDB" }]
+keywords = ["surrealdb", "spectron", "google-adk", "adk", "agent", "memory", "llm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "google-adk>=1.0.0",
+    "surrealdb[spectron]>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]
+
+[project.urls]
+Homepage = "https://surrealdb.com/platform/spectron"
+Documentation = "https://surrealdb.com/docs/learn/spectron"
+Repository = "https://github.com/surrealdb-dev/spectron-google-adk"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/spectron_google_adk"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
