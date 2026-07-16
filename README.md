@@ -16,14 +16,8 @@ package is the thin layer that hands those verbs to an ADK agent.
 pip install spectron-google-adk
 ```
 
-This pulls in `google-adk` and `surrealdb`. The Spectron client ships in
-`surrealdb` 3.0.0 and later. Until 3.0.0 is published to PyPI, install the
-client from the `surrealdb.py` main branch first:
-
-```bash
-pip install "surrealdb @ git+https://github.com/surrealdb/surrealdb.py.git@main"
-pip install spectron-google-adk
-```
+This pulls in `google-adk` and `surrealdb`. The Spectron client ships in the
+`surrealdb` package (3.0.0a1 and later), which is installed for you from PyPI.
 
 ## Configuration
 

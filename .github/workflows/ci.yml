@@ -30,10 +30,6 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # The Spectron client ships in surrealdb 3.0.0, which is not on PyPI
-          # yet. Install it from the surrealdb.py main branch so the >=3.0.0
-          # requirement is already satisfied when the package installs.
-          pip install "surrealdb @ git+https://github.com/surrealdb/surrealdb.py.git@main"
           pip install -e ".[dev]"
 
       - name: Lint

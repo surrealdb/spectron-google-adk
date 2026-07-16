@@ -20,15 +20,16 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
     "google-adk>=1.0.0",
-    # The Spectron client ships in the base surrealdb package from 3.0.0 on.
-    # Until 3.0.0 is on PyPI, install it from the surrealdb.py main branch
-    # (see the README and the CI workflow).
-    "surrealdb>=3.0.0",
+    # The Spectron client ships in the base surrealdb package. It is published to
+    # PyPI from 3.0.0a1 (v3 alpha 1) on; the pre-release pin lets pip install the
+    # alpha while still accepting later finals (3.0.0, 3.1.0, ...).
+    "surrealdb>=3.0.0a1",
 ]
 
 [project.optional-dependencies]
