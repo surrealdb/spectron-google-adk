@@ -3,9 +3,8 @@
 Give [Google ADK](https://github.com/google/adk-python) agents persistent
 memory backed by [Spectron](https://surrealdb.com/platform/spectron),
 SurrealDB's agent-memory layer.
-
-This package wraps Spectron's memory verbs as ADK tools. An agent can store
-facts, search them back, forget them, and reason over them, with memory that
+ 
+An agent can store facts, search them back, forget them, and reason over them, with memory that
 survives restarts and separate conversations. Spectron handles entity
 extraction, knowledge-graph storage, temporal facts, and hybrid retrieval; this
 package is the thin layer that hands those verbs to an ADK agent.
