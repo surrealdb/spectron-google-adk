@@ -7,7 +7,7 @@ from collections.abc import Sequence
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
 from google.adk.tools.base_toolset import BaseToolset
-from surrealdb import AsyncSpectron
+from surrealdb.spectron import AsyncSpectron
 from surrealdb.spectron._scope import ScopeArg
 
 from spectron_google_adk._config import SpectronConfig

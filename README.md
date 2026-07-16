@@ -94,7 +94,7 @@ Returns a plain list of tools. Pass your own `client` when you want to control
 its lifecycle; otherwise the client it creates lives for the process:
 
 ```python
-from surrealdb import AsyncSpectron
+from surrealdb.spectron import AsyncSpectron
 from spectron_google_adk import get_spectron_tools
 
 client = AsyncSpectron(context="acme-prod", endpoint="...", api_key="sk-...")

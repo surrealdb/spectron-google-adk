@@ -17,7 +17,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from google.adk.tools import FunctionTool
-from surrealdb import AsyncSpectron, SpectronError
+from surrealdb.spectron import AsyncSpectron, SpectronError
 from surrealdb.spectron._scope import ScopeArg
 
 # The verbs exposed as tools by default, in a sensible order for the model.

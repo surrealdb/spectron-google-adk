@@ -8,13 +8,13 @@ isolation.
 from __future__ import annotations
 
 import pytest
-from surrealdb import SpectronAPIError
 from surrealdb.spectron import (
     ForgetResponse,
     RecallHit,
     RecallResponse,
     ReflectResponse,
     RememberResponse,
+    SpectronAPIError,
 )
 
 from spectron_google_adk import DEFAULT_VERBS, build_tools, get_spectron_tools
