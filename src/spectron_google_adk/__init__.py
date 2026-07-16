@@ -15,7 +15,7 @@ from spectron_google_adk._config import SpectronConfig
 from spectron_google_adk._tools import DEFAULT_VERBS, build_tools
 from spectron_google_adk._toolset import SpectronToolset, get_spectron_tools
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "SpectronToolset",

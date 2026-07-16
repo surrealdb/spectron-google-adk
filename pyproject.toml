@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "spectron-google-adk"
-version = "0.1.0"
+version = "0.2.0"
 description = "SurrealDB Spectron memory as tools for Google Agent Development Kit (ADK) agents."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,10 +26,11 @@ classifiers = [
 ]
 dependencies = [
     "google-adk>=1.0.0",
-    # The Spectron client ships in the base surrealdb package. It is published to
-    # PyPI from 3.0.0a1 (v3 alpha 1) on; the pre-release pin lets pip install the
-    # alpha while still accepting later finals (3.0.0, 3.1.0, ...).
-    "surrealdb>=3.0.0a1",
+    # The Spectron client ships in the base surrealdb package under the
+    # surrealdb.spectron subpackage. It is published to PyPI from v3 alpha 2
+    # (3.0.0a2); the pre-release pin lets pip install the alpha while still
+    # accepting later finals (3.0.0, 3.1.0, ...).
+    "surrealdb>=3.0.0a2",
 ]
 
 [project.optional-dependencies]
