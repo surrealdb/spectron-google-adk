@@ -1,4 +1,4 @@
-"""ADK entry points: the SpectronToolset and the get_spectron_tools factory."""
+"""ADK entry points: the AgentMemoryToolset and the get_agent_memory_tools factory."""
 
 from __future__ import annotations
 
@@ -7,22 +7,21 @@ from collections.abc import Sequence
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.tools import FunctionTool
 from google.adk.tools.base_toolset import BaseToolset
-from surrealdb.spectron import AsyncSpectron
-from surrealdb.spectron._scope import ScopeArg
+from surrealdb.memory import AsyncMemory, ScopeArg
 
-from spectron_google_adk._config import SpectronConfig
-from spectron_google_adk._tools import build_tools
+from agent_memory_google_adk._config import AgentMemoryConfig
+from agent_memory_google_adk._tools import build_tools
 
 
 def _resolve_client(
     context: str | None,
     endpoint: str | None,
     api_key: str | None,
-    client: AsyncSpectron | None,
-    config: SpectronConfig | None,
+    client: AsyncMemory | None,
+    config: AgentMemoryConfig | None,
     timeout: float,
     max_retries: int,
-) -> tuple[AsyncSpectron, bool]:
+) -> tuple[AsyncMemory, bool]:
     """Return a client and whether this call owns (and must close) it."""
 
     if client is not None:
@@ -35,7 +34,7 @@ def _resolve_client(
             "provide either client=, config=, or all of "
             "context/endpoint/api_key"
         )
-    owned = AsyncSpectron(
+    owned = AsyncMemory(
         context,
         endpoint=endpoint,
         api_key=api_key,
@@ -45,18 +44,18 @@ def _resolve_client(
     return owned, True
 
 
-class SpectronToolset(BaseToolset):
-    """A Spectron-backed toolset for Google ADK agents.
+class AgentMemoryToolset(BaseToolset):
+    """A AgentMemory-backed toolset for Google ADK agents.
 
-    Wraps an ``AsyncSpectron`` client and exposes its memory verbs as ADK
+    Wraps an ``AsyncMemory`` client and exposes its memory verbs as ADK
     tools. This is the recommended entry point: an ADK ``Runner`` calls
     ``close`` on shutdown, which closes the client if the toolset created it.
 
     Add it to an agent directly::
 
-        toolset = SpectronToolset(
+        toolset = AgentMemoryToolset(
             context="acme-prod",
-            endpoint="https://api.spectron.example",
+            endpoint="https://api.agent_memory.example",
             api_key="sk-...",
         )
         agent = Agent(model="gemini-2.5-flash", name="assistant", tools=[toolset])
@@ -71,8 +70,8 @@ class SpectronToolset(BaseToolset):
         *,
         endpoint: str | None = None,
         api_key: str | None = None,
-        client: AsyncSpectron | None = None,
-        config: SpectronConfig | None = None,
+        client: AsyncMemory | None = None,
+        config: AgentMemoryConfig | None = None,
         session_id: str | None = None,
         scope: ScopeArg = None,
         include: Sequence[str] | None = None,
@@ -91,8 +90,8 @@ class SpectronToolset(BaseToolset):
         )
 
     @property
-    def client(self) -> AsyncSpectron:
-        """The underlying Spectron client."""
+    def client(self) -> AsyncMemory:
+        """The underlying AgentMemory client."""
 
         return self._client
 
@@ -106,33 +105,33 @@ class SpectronToolset(BaseToolset):
             await self._client.close()
 
 
-def get_spectron_tools(
+def get_agent_memory_tools(
     context: str | None = None,
     *,
     endpoint: str | None = None,
     api_key: str | None = None,
-    client: AsyncSpectron | None = None,
-    config: SpectronConfig | None = None,
+    client: AsyncMemory | None = None,
+    config: AgentMemoryConfig | None = None,
     session_id: str | None = None,
     scope: ScopeArg = None,
     include: Sequence[str] | None = None,
     timeout: float = 30.0,
     max_retries: int = 3,
 ) -> list[FunctionTool]:
-    """Build a list of Spectron-backed ADK tools.
+    """Build a list of AgentMemory-backed ADK tools.
 
     A convenience for scripts that want a plain tool list rather than a managed
     toolset. Provide either an existing ``client``, a ``config``, or the
     ``context`` / ``endpoint`` / ``api_key`` triple. When this function creates
     the client, that client is not closed automatically; pass your own
-    ``client`` or use ``SpectronToolset`` when you need deterministic cleanup.
+    ``client`` or use ``AgentMemoryToolset`` when you need deterministic cleanup.
 
     Args:
-        context: Spectron context id, for example "acme-prod".
-        endpoint: Full URL of the Spectron host.
-        api_key: Bearer token for the Spectron API.
-        client: An existing ``AsyncSpectron`` to reuse instead of the triple.
-        config: A ``SpectronConfig`` to build the client from.
+        context: AgentMemory context id, for example "acme-prod".
+        endpoint: Full URL of the AgentMemory host.
+        api_key: Bearer token for the AgentMemory API.
+        client: An existing ``AsyncMemory`` to reuse instead of the triple.
+        config: A ``AgentMemoryConfig`` to build the client from.
         session_id: Optional session id bound to the session-aware tools.
         scope: Optional scope bound to the write tools.
         include: Which verbs to expose. Defaults to all of them.

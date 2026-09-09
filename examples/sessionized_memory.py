@@ -15,7 +15,7 @@ import asyncio
 from google.adk.agents import Agent
 from google.adk.runners import InMemoryRunner
 
-from spectron_google_adk import SpectronConfig, SpectronToolset
+from agent_memory_google_adk import AgentMemoryConfig, AgentMemoryToolset
 
 
 def _print_final(label: str, events) -> None:
@@ -26,7 +26,7 @@ def _print_final(label: str, events) -> None:
                     print(f"[{label}] {part.text}")
 
 
-def _build_agent(toolset: SpectronToolset) -> Agent:
+def _build_agent(toolset: AgentMemoryToolset) -> Agent:
     return Agent(
         model="gemini-2.5-flash",
         name="assistant",
@@ -39,7 +39,7 @@ def _build_agent(toolset: SpectronToolset) -> Agent:
     )
 
 
-async def _run(toolset: SpectronToolset, message: str, label: str) -> None:
+async def _run(toolset: AgentMemoryToolset, message: str, label: str) -> None:
     agent = _build_agent(toolset)
     runner = InMemoryRunner(agent=agent)
     try:
@@ -49,24 +49,24 @@ async def _run(toolset: SpectronToolset, message: str, label: str) -> None:
 
 
 async def main() -> None:
-    config = SpectronConfig.from_env()
+    config = AgentMemoryConfig.from_env()
 
     # First agent, session user-123: store something.
-    store = SpectronToolset(config=config, session_id="user-123")
+    store = AgentMemoryToolset(config=config, session_id="user-123")
     try:
         await _run(store, "I'm working on the authentication service.", "store")
     finally:
         await store.close()
 
     # Second agent, same session: the fact is still there.
-    same = SpectronToolset(config=config, session_id="user-123")
+    same = AgentMemoryToolset(config=config, session_id="user-123")
     try:
         await _run(same, "What was I working on?", "same-session")
     finally:
         await same.close()
 
     # Third agent, different session: isolated, should not see it.
-    other = SpectronToolset(config=config, session_id="user-999")
+    other = AgentMemoryToolset(config=config, session_id="user-999")
     try:
         await _run(other, "What was I working on?", "other-session")
     finally:

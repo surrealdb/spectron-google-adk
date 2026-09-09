@@ -3,15 +3,15 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "spectron-google-adk"
-version = "0.3.0"
-description = "SurrealDB Spectron memory as tools for Google Agent Development Kit (ADK) agents."
+name = "agent-memory-google-adk"
+version = "0.4.0"
+description = "SurrealDB AgentMemory memory as tools for Google Agent Development Kit (ADK) agents."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [{ name = "SurrealDB" }]
-keywords = ["surrealdb", "spectron", "google-adk", "adk", "agent", "memory", "llm"]
+keywords = ["surrealdb", "agent_memory", "google-adk", "adk", "agent", "memory", "llm"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -26,11 +26,11 @@ classifiers = [
 ]
 dependencies = [
     "google-adk>=2.5.0",
-    # The Spectron client ships in the base surrealdb package under the
-    # surrealdb.spectron subpackage. It is published to PyPI from v3 alpha 4
+    # The AgentMemory client ships in the base surrealdb package under the
+    # surrealdb.memory subpackage. It is published to PyPI from v3 alpha 4
     # (3.0.0a4); the pre-release pin lets pip install the alpha while still
     # accepting later finals (3.0.0, 3.1.0, ...).
-    "surrealdb>=3.0.0a4",
+    "surrealdb[memory]>=3.0.0b8",
 ]
 
 [project.optional-dependencies]
@@ -41,12 +41,12 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://surrealdb.com/platform/spectron"
-Documentation = "https://surrealdb.com/docs/learn/spectron"
-Repository = "https://github.com/surrealdb-dev/spectron-google-adk"
+Homepage = "https://surrealdb.com/agent-memory"
+Documentation = "https://surrealdb.com/docs/learn/agent_memory"
+Repository = "https://github.com/surrealdb/agent-memory-google-adk"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/spectron_google_adk"]
+packages = ["src/agent_memory_google_adk"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

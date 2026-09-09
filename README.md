@@ -1,33 +1,33 @@
-# spectron-google-adk
+# agent-memory-google-adk
 
 Give [Google ADK](https://github.com/google/adk-python) agents persistent
-memory backed by [Spectron](https://surrealdb.com/platform/spectron),
+memory backed by [AgentMemory](https://surrealdb.com/agent-memory),
 SurrealDB's agent-memory layer.
  
 An agent can store facts, search them back, forget them, and reason over them, with memory that
-survives restarts and separate conversations. Spectron handles entity
+survives restarts and separate conversations. AgentMemory handles entity
 extraction, knowledge-graph storage, temporal facts, and hybrid retrieval; this
 package is the thin layer that hands those verbs to an ADK agent.
 
 ## Install
 
 ```bash
-pip install spectron-google-adk
+pip install agent-memory-google-adk
 ```
 
-This pulls in `google-adk` and `surrealdb`. The Spectron client ships in the
+This pulls in `google-adk` and `surrealdb`. The AgentMemory client ships in the
 `surrealdb` package (3.0.0a1 and later), which is installed for you from PyPI.
 
 ## Configuration
 
-Spectron needs a context id, an endpoint, and an API key. The Spectron SDK does
+AgentMemory needs a context id, an endpoint, and an API key. The AgentMemory SDK does
 not read environment variables itself, so you pass these in explicitly. For
-scripts, `SpectronConfig.from_env()` reads them from the environment for you:
+scripts, `AgentMemoryConfig.from_env()` reads them from the environment for you:
 
 ```bash
-export SPECTRON_CONTEXT="acme-prod"
-export SPECTRON_ENDPOINT="https://api.spectron.example"
-export SPECTRON_API_KEY="sk-spec-..."
+export AGENT_MEMORY_CONTEXT="acme-prod"
+export AGENT_MEMORY_ENDPOINT="https://api.agent_memory.example"
+export AGENT_MEMORY_API_KEY="sk-spec-..."
 export GOOGLE_API_KEY="your-google-api-key"   # used by the ADK model
 ```
 
@@ -39,12 +39,12 @@ See `.env.example` for the full list.
 import asyncio
 from google.adk.agents import Agent
 from google.adk.runners import InMemoryRunner
-from spectron_google_adk import SpectronToolset
+from agent_memory_google_adk import AgentMemoryToolset
 
 async def main():
-    toolset = SpectronToolset(
+    toolset = AgentMemoryToolset(
         context="acme-prod",
-        endpoint="https://api.spectron.example",
+        endpoint="https://api.agent_memory.example",
         api_key="sk-spec-...",
     )
 
@@ -72,32 +72,32 @@ async def main():
 asyncio.run(main())
 ```
 
-`SpectronToolset` extends ADK's `BaseToolset`, so an ADK `Runner` closes it on
+`AgentMemoryToolset` extends ADK's `BaseToolset`, so an ADK `Runner` closes it on
 shutdown. When the toolset creates the client, `close()` closes that client too.
 
 ## Two ways to build tools
 
-### SpectronToolset (recommended)
+### AgentMemoryToolset (recommended)
 
 Owns the client and manages its lifecycle. Add it to an agent as a single item
 in the `tools` list:
 
 ```python
-toolset = SpectronToolset(config=SpectronConfig.from_env())
+toolset = AgentMemoryToolset(config=AgentMemoryConfig.from_env())
 agent = Agent(model="gemini-2.5-flash", name="assistant", tools=[toolset])
 ```
 
-### get_spectron_tools (for quick scripts)
+### get_agent_memory_tools (for quick scripts)
 
 Returns a plain list of tools. Pass your own `client` when you want to control
 its lifecycle; otherwise the client it creates lives for the process:
 
 ```python
-from surrealdb.spectron import AsyncSpectron
-from spectron_google_adk import get_spectron_tools
+from surrealdb.memory import AsyncMemory
+from agent_memory_google_adk import get_agent_memory_tools
 
-client = AsyncSpectron(context="acme-prod", endpoint="...", api_key="sk-...")
-tools = get_spectron_tools(client=client)
+client = AsyncMemory(context="acme-prod", endpoint="...", api_key="sk-...")
+tools = get_agent_memory_tools(client=client)
 agent = Agent(model="gemini-2.5-flash", name="assistant", tools=tools)
 ```
 
@@ -108,7 +108,7 @@ values are fixed at build time and are not exposed to the model, so an agent
 cannot read or write outside its slice of memory:
 
 ```python
-toolset = SpectronToolset(config=config, session_id="user-123")
+toolset = AgentMemoryToolset(config=config, session_id="user-123")
 ```
 
 Two agents built with the same `session_id` share memory; agents on different
@@ -121,8 +121,8 @@ a subset, for example a collector agent that can only write and a researcher
 agent that can only read (see `examples/multi_agent.py`):
 
 ```python
-collector = SpectronToolset(config=config, include=["remember"])
-researcher = SpectronToolset(config=config, include=["recall", "reflect"])
+collector = AgentMemoryToolset(config=config, include=["remember"])
+researcher = AgentMemoryToolset(config=config, include=["recall", "reflect"])
 ```
 
 ## Tools
@@ -141,7 +141,7 @@ researcher = SpectronToolset(config=config, include=["recall", "reflect"])
 | `state` | (none) | Get a snapshot of current working memory. |
 
 Every tool returns a JSON-safe dict with a `status` key that is `"success"` or
-`"error"`. A failed Spectron request becomes
+`"error"`. A failed AgentMemory request becomes
 `{"status": "error", "message": ..., "status_code": ..., "trace_id": ...}` so
 the model sees it as data rather than the agent turn failing.
 
@@ -165,8 +165,8 @@ The tests use a fake client, so they need no network access or credentials.
 
 ## Links
 
-- Spectron: https://surrealdb.com/platform/spectron
-- Spectron docs: https://surrealdb.com/docs/learn/spectron
+- AgentMemory: https://surrealdb.com/agent-memory
+- AgentMemory docs: https://surrealdb.com/docs/learn/agent_memory
 - Google ADK: https://github.com/google/adk-python
 
 ## License

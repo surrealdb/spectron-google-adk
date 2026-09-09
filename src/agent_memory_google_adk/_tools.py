@@ -1,6 +1,6 @@
-"""Build Google ADK function tools backed by a Spectron client.
+"""Build Google ADK function tools backed by a AgentMemory client.
 
-Each Spectron memory verb is wrapped as an async function whose docstring and
+Each AgentMemory memory verb is wrapped as an async function whose docstring and
 type hints ADK turns into the schema the model sees. The wrappers return plain
 JSON-safe dicts and follow ADK's ``{"status": "success" | "error", ...}``
 convention, so a failed request surfaces to the model as data instead of
@@ -17,8 +17,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 from google.adk.tools import FunctionTool
-from surrealdb.spectron import AsyncSpectron, SpectronError
-from surrealdb.spectron._scope import ScopeArg
+from surrealdb.memory import AsyncMemory, MemoryServiceError, ScopeArg
 
 # The verbs exposed as tools by default, in a sensible order for the model.
 DEFAULT_VERBS: tuple[str, ...] = (
@@ -35,8 +34,8 @@ DEFAULT_VERBS: tuple[str, ...] = (
 )
 
 
-def _error(exc: SpectronError) -> dict[str, Any]:
-    """Turn a Spectron exception into the ADK error dict shape."""
+def _error(exc: MemoryServiceError) -> dict[str, Any]:
+    """Turn a AgentMemory exception into the ADK error dict shape."""
 
     result: dict[str, Any] = {
         "status": "error",
@@ -52,14 +51,14 @@ def _error(exc: SpectronError) -> dict[str, Any]:
 
 
 def _build_remember(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def remember(text: str) -> dict:
         """Store a fact, preference, or piece of information in long-term memory.
 
         Call this whenever the user shares something worth keeping for later:
         who they are, what they are working on, decisions, or any durable fact.
-        Spectron extracts the entities and relationships automatically.
+        AgentMemory extracts the entities and relationships automatically.
 
         Args:
             text: The information to remember, written in plain language.
@@ -72,7 +71,7 @@ def _build_remember(
             response = await client.remember(
                 text, session_id=session_id, scope=scope
             )
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         result: dict[str, Any] = {
             "status": "success",
@@ -89,7 +88,7 @@ def _build_remember(
 
 
 def _build_recall(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def recall(query: str) -> dict:
         """Search long-term memory for information relevant to a query.
@@ -107,7 +106,7 @@ def _build_recall(
         """
         try:
             response = await client.recall(query, session_id=session_id)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         hits = [
             {
@@ -124,7 +123,7 @@ def _build_recall(
 
 
 def _build_forget(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def forget(query: str) -> dict:
         """Remove information from memory that matches a description.
@@ -140,7 +139,7 @@ def _build_forget(
         """
         try:
             response = await client.forget(query)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {"status": "success", "deleted": response.deleted}
 
@@ -148,7 +147,7 @@ def _build_forget(
 
 
 def _build_reflect(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def reflect(query: str) -> dict:
         """Summarize what memory knows about a topic and synthesize an answer.
@@ -166,7 +165,7 @@ def _build_reflect(
         """
         try:
             response = await client.reflect(query)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {
             "status": "success",
@@ -178,12 +177,12 @@ def _build_reflect(
 
 
 def _build_chat(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def chat(message: str) -> dict:
         """Ask memory a question and get an answer grounded in stored facts.
 
-        This runs Spectron's own retrieval-and-answer pipeline over the
+        This runs AgentMemory's own retrieval-and-answer pipeline over the
         context. Prefer recall when you want raw passages to reason over
         yourself, and chat when you want a ready-made grounded reply.
 
@@ -197,7 +196,7 @@ def _build_chat(
             response = await client.chat(
                 message, session_id=session_id, scope=scope
             )
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {
             "status": "success",
@@ -210,7 +209,7 @@ def _build_chat(
 
 
 def _build_consolidate(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def consolidate() -> dict:
         """Consolidate recent facts into durable, higher-level observations.
@@ -224,7 +223,7 @@ def _build_consolidate(
         """
         try:
             response = await client.consolidate()
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {
             "status": "success",
@@ -237,7 +236,7 @@ def _build_consolidate(
 
 
 def _build_elaborate(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def elaborate(entity_ref: str) -> dict:
         """Expand an entity's relationships from what is already in memory.
@@ -255,7 +254,7 @@ def _build_elaborate(
         """
         try:
             response = await client.elaborate(entity_ref=entity_ref)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {
             "status": "success",
@@ -266,7 +265,7 @@ def _build_elaborate(
 
 
 def _build_query_context(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def query_context(query: str) -> dict:
         """Build a composed context string relevant to a query.
@@ -282,7 +281,7 @@ def _build_query_context(
         """
         try:
             response = await client.query_context(query)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {
             "status": "success",
@@ -294,7 +293,7 @@ def _build_query_context(
 
 
 def _build_inspect(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def inspect(ref: str) -> dict:
         """Inspect a single memory object by reference.
@@ -312,7 +311,7 @@ def _build_inspect(
         """
         try:
             payload = await client.inspect(ref)
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {"status": "success", "object": payload}
 
@@ -320,7 +319,7 @@ def _build_inspect(
 
 
 def _build_state(
-    client: AsyncSpectron, session_id: str | None, scope: ScopeArg
+    client: AsyncMemory, session_id: str | None, scope: ScopeArg
 ) -> Callable:
     async def state() -> dict:
         """Get a snapshot of the context's current working memory.
@@ -334,14 +333,14 @@ def _build_state(
         """
         try:
             response = await client.state()
-        except SpectronError as exc:
+        except MemoryServiceError as exc:
             return _error(exc)
         return {"status": "success", "state": response.to_dict()}
 
     return state
 
 
-_BUILDERS: dict[str, Callable[[AsyncSpectron, str | None, ScopeArg], Callable]] = {
+_BUILDERS: dict[str, Callable[[AsyncMemory, str | None, ScopeArg], Callable]] = {
     "remember": _build_remember,
     "recall": _build_recall,
     "forget": _build_forget,
@@ -356,16 +355,16 @@ _BUILDERS: dict[str, Callable[[AsyncSpectron, str | None, ScopeArg], Callable]] 
 
 
 def build_tools(
-    client: AsyncSpectron,
+    client: AsyncMemory,
     *,
     session_id: str | None = None,
     scope: ScopeArg = None,
     include: Sequence[str] | None = None,
 ) -> list[FunctionTool]:
-    """Wrap Spectron verbs as ADK FunctionTools bound to one client.
+    """Wrap AgentMemory verbs as ADK FunctionTools bound to one client.
 
     Args:
-        client: An open ``AsyncSpectron`` instance.
+        client: An open ``AsyncMemory`` instance.
         session_id: Optional session id bound to the ``remember``, ``recall``,
             and ``chat`` tools for per-session isolation.
         scope: Optional scope bound to the ``remember`` and ``chat`` tools.
@@ -380,7 +379,7 @@ def build_tools(
     if unknown:
         known = ", ".join(_BUILDERS)
         raise ValueError(
-            f"unknown Spectron verb(s): {', '.join(unknown)}. Known verbs: {known}"
+            f"unknown AgentMemory verb(s): {', '.join(unknown)}. Known verbs: {known}"
         )
 
     tools: list[FunctionTool] = []

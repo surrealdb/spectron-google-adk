@@ -1,4 +1,4 @@
-"""Connection configuration for the Spectron client used by the ADK tools."""
+"""Connection configuration for the AgentMemory client used by the ADK tools."""
 
 from __future__ import annotations
 
@@ -7,10 +7,10 @@ from dataclasses import dataclass
 
 
 @dataclass(slots=True)
-class SpectronConfig:
-    """Everything needed to open a Spectron client.
+class AgentMemoryConfig:
+    """Everything needed to open a AgentMemory client.
 
-    The Spectron SDK never reads environment variables, so credentials are
+    The AgentMemory SDK never reads environment variables, so credentials are
     always passed in explicitly. ``from_env`` is a convenience for scripts and
     examples that keep their secrets in the process environment.
     """
@@ -25,10 +25,10 @@ class SpectronConfig:
     def from_env(
         cls,
         *,
-        context_var: str = "SPECTRON_CONTEXT",
-        endpoint_var: str = "SPECTRON_ENDPOINT",
-        api_key_var: str = "SPECTRON_API_KEY",
-    ) -> SpectronConfig:
+        context_var: str = "AGENT_MEMORY_CONTEXT",
+        endpoint_var: str = "AGENT_MEMORY_ENDPOINT",
+        api_key_var: str = "AGENT_MEMORY_API_KEY",
+    ) -> AgentMemoryConfig:
         """Build a config from environment variables.
 
         Raises ``ValueError`` if any of the required variables is missing so
