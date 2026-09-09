@@ -1,6 +1,6 @@
-"""Build Google ADK function tools backed by a AgentMemory client.
+"""Build Google ADK function tools backed by an Agent Memory client.
 
-Each AgentMemory memory verb is wrapped as an async function whose docstring and
+Each Agent Memory verb is wrapped as an async function whose docstring and
 type hints ADK turns into the schema the model sees. The wrappers return plain
 JSON-safe dicts and follow ADK's ``{"status": "success" | "error", ...}``
 convention, so a failed request surfaces to the model as data instead of
@@ -35,7 +35,7 @@ DEFAULT_VERBS: tuple[str, ...] = (
 
 
 def _error(exc: MemoryServiceError) -> dict[str, Any]:
-    """Turn a AgentMemory exception into the ADK error dict shape."""
+    """Turn an Agent Memory exception into the ADK error dict shape."""
 
     result: dict[str, Any] = {
         "status": "error",
@@ -58,7 +58,7 @@ def _build_remember(
 
         Call this whenever the user shares something worth keeping for later:
         who they are, what they are working on, decisions, or any durable fact.
-        AgentMemory extracts the entities and relationships automatically.
+        Agent Memory extracts the entities and relationships automatically.
 
         Args:
             text: The information to remember, written in plain language.
@@ -182,7 +182,7 @@ def _build_chat(
     async def chat(message: str) -> dict:
         """Ask memory a question and get an answer grounded in stored facts.
 
-        This runs AgentMemory's own retrieval-and-answer pipeline over the
+        This runs Agent Memory's own retrieval-and-answer pipeline over the
         context. Prefer recall when you want raw passages to reason over
         yourself, and chat when you want a ready-made grounded reply.
 
@@ -361,7 +361,7 @@ def build_tools(
     scope: ScopeArg = None,
     include: Sequence[str] | None = None,
 ) -> list[FunctionTool]:
-    """Wrap AgentMemory verbs as ADK FunctionTools bound to one client.
+    """Wrap Agent Memory verbs as ADK FunctionTools bound to one client.
 
     Args:
         client: An open ``AsyncMemory`` instance.
@@ -379,7 +379,7 @@ def build_tools(
     if unknown:
         known = ", ".join(_BUILDERS)
         raise ValueError(
-            f"unknown AgentMemory verb(s): {', '.join(unknown)}. Known verbs: {known}"
+            f"unknown Agent Memory verb(s): {', '.join(unknown)}. Known verbs: {known}"
         )
 
     tools: list[FunctionTool] = []

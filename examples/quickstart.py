@@ -1,6 +1,6 @@
-"""Quickstart: an ADK agent with AgentMemory memory.
+"""Quickstart: an ADK agent with Agent Memory.
 
-The agent gets the full AgentMemory tool set. It stores a fact on the first turn
+The agent gets the full Agent Memory tool set. It stores a fact on the first turn
 and recalls it on the second. Run it after filling in .env (see .env.example).
 
     python examples/quickstart.py

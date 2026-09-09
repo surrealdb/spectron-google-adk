@@ -1,8 +1,8 @@
-"""AgentMemory memory as tools for Google Agent Development Kit (ADK) agents.
+"""Agent Memory as tools for Google Agent Development Kit (ADK) agents.
 
 Public API:
 
-- ``AgentMemoryToolset``: an ADK ``BaseToolset`` that owns a AgentMemory client and
+- ``AgentMemoryToolset``: an ADK ``BaseToolset`` that owns an Agent Memory client and
   exposes its memory verbs as tools, with lifecycle cleanup.
 - ``get_agent_memory_tools``: a factory returning a plain list of tools.
 - ``AgentMemoryConfig``: connection settings, with a ``from_env`` helper.
@@ -15,7 +15,7 @@ from agent_memory_google_adk._config import AgentMemoryConfig
 from agent_memory_google_adk._tools import DEFAULT_VERBS, build_tools
 from agent_memory_google_adk._toolset import AgentMemoryToolset, get_agent_memory_tools
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 __all__ = [
     "AgentMemoryToolset",

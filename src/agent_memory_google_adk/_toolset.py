@@ -45,7 +45,7 @@ def _resolve_client(
 
 
 class AgentMemoryToolset(BaseToolset):
-    """A AgentMemory-backed toolset for Google ADK agents.
+    """An Agent Memory-backed toolset for Google ADK agents.
 
     Wraps an ``AsyncMemory`` client and exposes its memory verbs as ADK
     tools. This is the recommended entry point: an ADK ``Runner`` calls
@@ -55,7 +55,7 @@ class AgentMemoryToolset(BaseToolset):
 
         toolset = AgentMemoryToolset(
             context="acme-prod",
-            endpoint="https://api.agent_memory.example",
+            endpoint="https://api.agent-memory.example",
             api_key="sk-...",
         )
         agent = Agent(model="gemini-2.5-flash", name="assistant", tools=[toolset])
@@ -91,7 +91,7 @@ class AgentMemoryToolset(BaseToolset):
 
     @property
     def client(self) -> AsyncMemory:
-        """The underlying AgentMemory client."""
+        """The underlying Agent Memory client."""
 
         return self._client
 
@@ -118,7 +118,7 @@ def get_agent_memory_tools(
     timeout: float = 30.0,
     max_retries: int = 3,
 ) -> list[FunctionTool]:
-    """Build a list of AgentMemory-backed ADK tools.
+    """Build a list of Agent Memory-backed ADK tools.
 
     A convenience for scripts that want a plain tool list rather than a managed
     toolset. Provide either an existing ``client``, a ``config``, or the
@@ -127,9 +127,9 @@ def get_agent_memory_tools(
     ``client`` or use ``AgentMemoryToolset`` when you need deterministic cleanup.
 
     Args:
-        context: AgentMemory context id, for example "acme-prod".
-        endpoint: Full URL of the AgentMemory host.
-        api_key: Bearer token for the AgentMemory API.
+        context: Agent Memory context id, for example "acme-prod".
+        endpoint: Full URL of the Agent Memory host.
+        api_key: Bearer token for the Agent Memory API.
         client: An existing ``AsyncMemory`` to reuse instead of the triple.
         config: A ``AgentMemoryConfig`` to build the client from.
         session_id: Optional session id bound to the session-aware tools.

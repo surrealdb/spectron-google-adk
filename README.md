@@ -1,11 +1,11 @@
 # agent-memory-google-adk
 
 Give [Google ADK](https://github.com/google/adk-python) agents persistent
-memory backed by [AgentMemory](https://surrealdb.com/agent-memory),
+memory backed by [Agent Memory](https://surrealdb.com/agent-memory),
 SurrealDB's agent-memory layer.
  
 An agent can store facts, search them back, forget them, and reason over them, with memory that
-survives restarts and separate conversations. AgentMemory handles entity
+survives restarts and separate conversations. Agent Memory handles entity
 extraction, knowledge-graph storage, temporal facts, and hybrid retrieval; this
 package is the thin layer that hands those verbs to an ADK agent.
 
@@ -15,18 +15,18 @@ package is the thin layer that hands those verbs to an ADK agent.
 pip install agent-memory-google-adk
 ```
 
-This pulls in `google-adk` and `surrealdb`. The AgentMemory client ships in the
+This pulls in `google-adk` and `surrealdb`. The Agent Memory client ships in the
 `surrealdb` package (3.0.0a1 and later), which is installed for you from PyPI.
 
 ## Configuration
 
-AgentMemory needs a context id, an endpoint, and an API key. The AgentMemory SDK does
+Agent Memory needs a context id, an endpoint, and an API key. The Agent Memory SDK does
 not read environment variables itself, so you pass these in explicitly. For
 scripts, `AgentMemoryConfig.from_env()` reads them from the environment for you:
 
 ```bash
 export AGENT_MEMORY_CONTEXT="acme-prod"
-export AGENT_MEMORY_ENDPOINT="https://api.agent_memory.example"
+export AGENT_MEMORY_ENDPOINT="https://api.agent-memory.example"
 export AGENT_MEMORY_API_KEY="sk-spec-..."
 export GOOGLE_API_KEY="your-google-api-key"   # used by the ADK model
 ```
@@ -44,7 +44,7 @@ from agent_memory_google_adk import AgentMemoryToolset
 async def main():
     toolset = AgentMemoryToolset(
         context="acme-prod",
-        endpoint="https://api.agent_memory.example",
+        endpoint="https://api.agent-memory.example",
         api_key="sk-spec-...",
     )
 
@@ -141,7 +141,7 @@ researcher = AgentMemoryToolset(config=config, include=["recall", "reflect"])
 | `state` | (none) | Get a snapshot of current working memory. |
 
 Every tool returns a JSON-safe dict with a `status` key that is `"success"` or
-`"error"`. A failed AgentMemory request becomes
+`"error"`. A failed Agent Memory request becomes
 `{"status": "error", "message": ..., "status_code": ..., "trace_id": ...}` so
 the model sees it as data rather than the agent turn failing.
 
@@ -165,8 +165,8 @@ The tests use a fake client, so they need no network access or credentials.
 
 ## Links
 
-- AgentMemory: https://surrealdb.com/agent-memory
-- AgentMemory docs: https://surrealdb.com/docs/learn/agent_memory
+- Agent Memory: https://surrealdb.com/agent-memory
+- Agent Memory docs: https://surrealdb.com/docs/agent-memory
 - Google ADK: https://github.com/google/adk-python
 
 ## License

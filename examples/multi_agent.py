@@ -1,7 +1,7 @@
 """Two agents sharing one memory context.
 
 A collector agent can only write (remember). A researcher agent can only read
-(recall, reflect). Both point at the same AgentMemory context, so knowledge the
+(recall, reflect). Both point at the same Agent Memory context, so knowledge the
 collector stores is available to the researcher. Splitting the verbs this way
 keeps each agent's job narrow while the memory stays shared.
 

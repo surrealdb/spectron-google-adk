@@ -1,4 +1,4 @@
-"""Tool wrapping and return-shape tests using a fake AgentMemory client.
+"""Tool wrapping and return-shape tests using a fake Agent Memory client.
 
 No network or credentials are needed: a stub client returns canned response
 dataclasses (and, in one case, raises) so the wrappers can be checked in

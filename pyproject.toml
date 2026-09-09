@@ -5,13 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "agent-memory-google-adk"
 version = "0.4.0"
-description = "SurrealDB AgentMemory memory as tools for Google Agent Development Kit (ADK) agents."
+description = "SurrealDB Agent Memory as tools for Google Agent Development Kit (ADK) agents."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [{ name = "SurrealDB" }]
-keywords = ["surrealdb", "agent_memory", "google-adk", "adk", "agent", "memory", "llm"]
+keywords = ["surrealdb", "agent-memory", "google-adk", "adk", "agent", "memory", "llm"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -26,7 +26,7 @@ classifiers = [
 ]
 dependencies = [
     "google-adk>=2.5.0",
-    # The AgentMemory client ships in the base surrealdb package under the
+    # The Agent Memory client ships in the base surrealdb package under the
     # surrealdb.memory subpackage. It is published to PyPI from v3 alpha 4
     # (3.0.0a4); the pre-release pin lets pip install the alpha while still
     # accepting later finals (3.0.0, 3.1.0, ...).
@@ -42,7 +42,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://surrealdb.com/agent-memory"
-Documentation = "https://surrealdb.com/docs/learn/agent_memory"
+Documentation = "https://surrealdb.com/docs/agent-memory"
 Repository = "https://github.com/surrealdb/agent-memory-google-adk"
 
 [tool.hatch.build.targets.wheel]

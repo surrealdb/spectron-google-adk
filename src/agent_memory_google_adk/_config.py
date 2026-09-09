@@ -1,4 +1,4 @@
-"""Connection configuration for the AgentMemory client used by the ADK tools."""
+"""Connection configuration for the Agent Memory client used by the ADK tools."""
 
 from __future__ import annotations
 
@@ -8,9 +8,9 @@ from dataclasses import dataclass
 
 @dataclass(slots=True)
 class AgentMemoryConfig:
-    """Everything needed to open a AgentMemory client.
+    """Everything needed to open an Agent Memory client.
 
-    The AgentMemory SDK never reads environment variables, so credentials are
+    The Agent Memory SDK never reads environment variables, so credentials are
     always passed in explicitly. ``from_env`` is a convenience for scripts and
     examples that keep their secrets in the process environment.
     """
