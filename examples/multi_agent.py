@@ -1,7 +1,7 @@
 """Two agents sharing one memory context.
 
 A collector agent can only write (remember). A researcher agent can only read
-(recall, reflect). Both point at the same Spectron context, so knowledge the
+(recall, reflect). Both point at the same Agent Memory context, so knowledge the
 collector stores is available to the researcher. Splitting the verbs this way
 keeps each agent's job narrow while the memory stays shared.
 
@@ -15,7 +15,7 @@ import asyncio
 from google.adk.agents import Agent
 from google.adk.runners import InMemoryRunner
 
-from spectron_google_adk import SpectronConfig, SpectronToolset
+from agent_memory_google_adk import AgentMemoryConfig, AgentMemoryToolset
 
 
 def _print_final(label: str, events) -> None:
@@ -35,10 +35,10 @@ async def _run(agent: Agent, message: str, label: str) -> None:
 
 
 async def main() -> None:
-    config = SpectronConfig.from_env()
+    config = AgentMemoryConfig.from_env()
 
-    collector_tools = SpectronToolset(config=config, include=["remember"])
-    researcher_tools = SpectronToolset(config=config, include=["recall", "reflect"])
+    collector_tools = AgentMemoryToolset(config=config, include=["remember"])
+    researcher_tools = AgentMemoryToolset(config=config, include=["recall", "reflect"])
 
     collector = Agent(
         model="gemini-2.5-flash",

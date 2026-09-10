@@ -1,6 +1,6 @@
-"""Quickstart: an ADK agent with Spectron memory.
+"""Quickstart: an ADK agent with Agent Memory.
 
-The agent gets the full Spectron tool set. It stores a fact on the first turn
+The agent gets the full Agent Memory tool set. It stores a fact on the first turn
 and recalls it on the second. Run it after filling in .env (see .env.example).
 
     python examples/quickstart.py
@@ -13,7 +13,7 @@ import asyncio
 from google.adk.agents import Agent
 from google.adk.runners import InMemoryRunner
 
-from spectron_google_adk import SpectronConfig, SpectronToolset
+from agent_memory_google_adk import AgentMemoryConfig, AgentMemoryToolset
 
 
 def _print_final(label: str, events) -> None:
@@ -25,13 +25,13 @@ def _print_final(label: str, events) -> None:
 
 
 async def main() -> None:
-    config = SpectronConfig.from_env()
-    toolset = SpectronToolset(config=config)
+    config = AgentMemoryConfig.from_env()
+    toolset = AgentMemoryToolset(config=config)
 
     agent = Agent(
         model="gemini-2.5-flash",
         name="assistant",
-        description="An assistant with persistent memory backed by Spectron.",
+        description="An assistant with persistent memory backed by AgentMemory.",
         instruction=(
             "You are a helpful assistant with a long-term memory. "
             "Use the remember tool to store durable facts the user shares, "

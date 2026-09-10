@@ -1,4 +1,4 @@
-"""Tool wrapping and return-shape tests using a fake Spectron client.
+"""Tool wrapping and return-shape tests using a fake Agent Memory client.
 
 No network or credentials are needed: a stub client returns canned response
 dataclasses (and, in one case, raises) so the wrappers can be checked in
@@ -8,20 +8,20 @@ isolation.
 from __future__ import annotations
 
 import pytest
-from surrealdb.spectron import (
+from surrealdb.memory import (
     ForgetResponse,
+    MemoryAPIError,
     RecallHit,
     RecallResponse,
     ReflectResponse,
     RememberResponse,
-    SpectronAPIError,
 )
 
-from spectron_google_adk import DEFAULT_VERBS, build_tools, get_spectron_tools
+from agent_memory_google_adk import DEFAULT_VERBS, build_tools, get_agent_memory_tools
 
 
 class FakeClient:
-    """Minimal async stand-in for AsyncSpectron used by build_tools."""
+    """Minimal async stand-in for AsyncMemory used by build_tools."""
 
     def __init__(self, *, fail: bool = False) -> None:
         self.fail = fail
@@ -34,7 +34,7 @@ class FakeClient:
     async def recall(self, query, **kwargs):
         self.calls.append(("recall", (query,), kwargs))
         if self.fail:
-            raise SpectronAPIError(500, "boom", trace_id="trace:xyz")
+            raise MemoryAPIError(500, "boom", trace_id="trace:xyz")
         return RecallResponse(
             hits=[RecallHit(id="fact:1", score=0.9, source="fact", text="hi")]
         )
@@ -121,11 +121,11 @@ async def test_errors_map_to_error_dict() -> None:
     assert result["trace_id"] == "trace:xyz"
 
 
-def test_get_spectron_tools_requires_credentials() -> None:
+def test_get_agent_memory_tools_requires_credentials() -> None:
     with pytest.raises(ValueError):
-        get_spectron_tools()
+        get_agent_memory_tools()
 
 
-def test_get_spectron_tools_accepts_a_client() -> None:
-    tools = get_spectron_tools(client=FakeClient(), include=["recall"])
+def test_get_agent_memory_tools_accepts_a_client() -> None:
+    tools = get_agent_memory_tools(client=FakeClient(), include=["recall"])
     assert [tool.name for tool in tools] == ["recall"]
