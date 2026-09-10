@@ -26,10 +26,10 @@ classifiers = [
 ]
 dependencies = [
     "google-adk>=2.5.0",
-    # The Agent Memory client ships in the base surrealdb package under the
-    # surrealdb.memory subpackage. It is published to PyPI from v3 alpha 4
-    # (3.0.0a4); the pre-release pin lets pip install the alpha while still
-    # accepting later finals (3.0.0, 3.1.0, ...).
+    # The Agent Memory client is its own distribution (surrealdb-memory),
+    # pulled in by the [memory] extra, which surrealdb publishes from 3.0.0b8.
+    # The pre-release pin lets pip take the beta while still accepting later
+    # finals (3.0.0, 3.1.0, ...).
     "surrealdb[memory]>=3.0.0b8",
 ]
 
